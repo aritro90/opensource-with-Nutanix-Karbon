@@ -1,5 +1,14 @@
-kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.10.3/manifests/namespace.yaml
-kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.10.3/manifests/metallb.yaml
+1. Get the latest version of metallb yaml from below:
+https://metallb.universe.tf/installation/#installation-by-manifest
+
+2. Copy the namespace and metallb yaml and excute on the client machine
+ 
+kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.11.0/manifests/namespace.yaml
+kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.11.0/manifests/metallb.yaml
+
+3. change the IP Pool defined in the metallb-cm.yaml. Make to have them in the same range as that of your worker nodes frontend network (not volume network, if working on segmented volune design)
+
+Example: 
 
 metallb-cm.yaml
 apiVersion: v1
@@ -13,4 +22,4 @@ data:
     - name: default
       protocol: layer2
       addresses:
-      - 10.136.101.10-10.136.101.19
+      - 10.x.x.x-10.x.x.x
