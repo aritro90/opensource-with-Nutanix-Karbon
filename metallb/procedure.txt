@@ -6,16 +6,14 @@ https://metallb.universe.tf/installation/#installation-by-manifest
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.11.0/manifests/namespace.yaml
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.11.0/manifests/metallb.yaml
 
-3. change the IP Pool defined in the metallb-cm.yaml. Make to have them in the same range as that of your worker nodes frontend network (not volume network, if working on segmented volune design)
+3. change the IP Pool defined in the metallb-cm.yaml. Make to have them in the same range as that of your worker nodes frontend network (not volume network, if working on segmented volune design). Once change you can apply that using below:
 
-Example: 
+kubectl apply -f metallb-cm.yaml
 
-metallb-cm.yaml
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  namespace: metallb-system
-  name: config
+
+Example of ip pool in config map can be seen below 
+-----
+---
 data:
   config: |
     address-pools:
