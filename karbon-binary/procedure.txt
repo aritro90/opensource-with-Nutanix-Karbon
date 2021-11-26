@@ -1,0 +1,26 @@
+Step 1: Copy to karbonctl to environment path
+cp karbonctl /usr/local/bin/karbonctl
+
+Step 2: To login into Prism Central from client machine
+karbonctl login --pc-ip 10.x.x.x --pc-username admin --pc-password xxxxx
+
+Step 3: To Gerenate the kubeconfig file in client machine
+karbonctl cluster kubeconfig --cluster-name xxxx  > kubeconfig.file
+Example:
+karbonctl cluster kubeconfig --cluster-name dexter  > kubeconfig.dexter
+
+Step 4: Download and Install Kubectl in client machine
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+
+sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+
+Step 5:
+Setup the path for the kubeconfig environment variable
+export KUBECONFIG=<Path to the kubeconfig file generated in step 3>
+
+Example:
+export KUBECONFIG=/root/opensource-with-Nutanix-Karbon/karbon-binary/kubeconfig.dexter
+
+Step 6:
+
+Execute "kubctl get nodes" to see if it is working now 
