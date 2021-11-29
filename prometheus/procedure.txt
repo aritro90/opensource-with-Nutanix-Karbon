@@ -1,0 +1,75 @@
+One Prometheus server (deployed by default by the Karbon installer) is going to monitor the Kubernetes internal components and state.
+Another Prometheus server is going to monitor any other applications deployed in your cluster.
+
+Step 1:
+1. Create a namespace named as monitoring-apps(this is where we will have our 2nd Promethius instance running).
+2. Create a service account named as prometheus in the same namespace as above
+3. Create Cluster Role to define the required access needed by the service account above and Cluster Role Binding to bind the service account with the Cluster Role
+
+To apply all the above run the below:
+kubectl apply -f monitoring-rbac.yaml
+
+Step 2:
+1. Creating a new Prometheus instance in monitoring-apps namespace
+ 1.1 Defining number of replicas as 2
+ 1.2 Rentention as 30 days
+ 1.3 Mapping it with the above service account named prometheus
+ 1.4 Defining a Service monitor selector label as "monitoring: apps" apply this label to the apps which you would like to monitor
+ 1.5 Set the alert manager to use the ntnx-system defined alert manager named alertmanager-main
+ 1.6 Set the CPU requests limit to 1m cpu and 2Gi memory
+ 1.7 Define a persistent stiorage from default storage class of 100Gi
+ 1.8 Check and define the same version of prometheus used in the cluster already
+kubectl get prometheus k8s -n ntnx-system  -o jsonpath='{.spec.version}'
+
+2. Create the service for this prometheus instance so that graphana can add it as a data source
+ 2.1 use the same namesspace
+ 2.2 expose it on port 9090
+
+To apply the above run the below:
+
+kubectl apply -f prom-inst-svc.yaml
+
+
+Step 3:
+1. Create a service monitor resource that will automatically configure Prometheus to collect metrics of all service with a specific label
+
+To apply the above run the below:
+
+kubectl apply -f svc-mon.yaml
+
+Step 4:
+1. Add and update Grafana repo
+
+helm repo add grafana https://grafana.github.io/helm-charts
+helm repo update
+
+Step 5:
+1. Create grafana namespace
+
+kubectl create ns grafana
+
+Step 4: (grafana-values.yaml)
+1. Create Grafana values file with specific values to be passed to the grafana charts
+ 1.1 Define the Service type as Load Balancer so that it could be exposed externally and accessible  1.2 Define a persistent storage of 100 Gi for Grafana
+ 1.3 list the required plugins
+ 1.4 define the datasources both from ntnx-system and monitoring-apps
+
+Step 5:
+1. Install Grafana helm chart with values generated in step 4
+
+helm install grafana grafana/grafana --namespace grafana -f grafana-values.yaml
+
+Step 6:
+1. get the ip address of the grafana service
+kubectl get svc --namespace grafana grafana -o jsonpath='{.status.loadBalancer.ingress[0].ip}'
+
+2.Get the Admin password to login into grafana 
+
+kubectl get secret --namespace grafana grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
+
+step 7: 
+1. Deploy a sample app and expose it through a service. make sure to add the "monitoring: apps" label
+
+kubectl apply -f example-app.yaml
+
+

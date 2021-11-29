@@ -1,0 +1,25 @@
+service:
+  type: LoadBalancer
+
+persistence:
+  enabled: true
+  size: 100Gi
+
+plugins:
+  - grafana-piechart-panel
+  - digrich-bubblechart-panel
+  - grafana-clock-panel
+
+datasources:
+  datasources.yaml:
+    apiVersion: 1
+    datasources:
+      - name: Prometheus K8s
+        type: prometheus
+        url: http://prometheus-k8s.ntnx-system.svc.cluster.local:9090
+        access: proxy
+        isDefault: true
+      - name: Prometheus Apps
+        type: prometheus
+        url: http://prometheus-apps.monitoring-apps.svc.cluster.local:9090
+        access: proxy

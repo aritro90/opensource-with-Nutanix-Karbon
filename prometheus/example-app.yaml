@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: example-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: example-app
+  template:
+    metadata:
+      labels:
+        app: example-app
+    spec:
+      containers:
+      - name: example-app
+        image: nginx
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: example-app
+  labels:
+    app: example-app
+    monitoring: apps
+spec:
+  selector:
+    app: example-app
+  ports:
+    - port: 80
+  type: LoadBalancer
