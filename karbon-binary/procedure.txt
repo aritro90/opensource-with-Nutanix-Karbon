@@ -24,3 +24,6 @@ export KUBECONFIG=/root/opensource-with-Nutanix-Karbon/karbon-binary/kubeconfig.
 Step 6:
 
 Execute "kubctl get nodes" to see if it is working now 
+
+Step 7:
+Make sure to change the permission of the kubeconfig file to 600 so that you do not face any warnings while working in helm 
