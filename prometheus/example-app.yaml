@@ -14,7 +14,10 @@ spec:
     spec:
       containers:
       - name: example-app
-        image: nginx
+        image: fabxc/instrumented_app
+        ports:
+        - name: http-metrics
+          containerPort: 8080
 ---
 kind: Service
 apiVersion: v1
@@ -27,5 +30,6 @@ spec:
   selector:
     app: example-app
   ports:
-    - port: 80
+  - name: http-metrics
+    port: 8080
   type: LoadBalancer

@@ -72,4 +72,25 @@ step 7:
 
 kubectl apply -f example-app.yaml
 
+2. get the ip address of the example app and try to access it over the web browser couple of time
+
+kubectl get svc example-app -o jsonpath='{.status.loadBalancer.ingress[0].ip}' ; echo
+
+
+Step 8:
+
+Now you can open Grafana’s interface and you will find two Data Sources already configured under settings tab:
+
+Prometheus K8s: the built-in Prometheus instance with the system Metrics
+Prometheus Apps: the freshly deployed Prometheus instance with your applications metrics
+
+Click on + symbol on the left pane  and click on create and then click on add an empty panel 
+
+When creating a new panel, just select the Prometheus Apps Data Sources and you will be able to browse in the applications metrics drop-down list to build your graph.
+
+Select http_requests_total under metric
+
+And Select code 200 and scroll down and click on the use query
+
+
 
