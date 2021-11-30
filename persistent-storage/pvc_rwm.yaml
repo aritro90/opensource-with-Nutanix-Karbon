@@ -1,7 +1,7 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: rwo-pv-claim
+  name: rwm-pv-claim
 spec:
   storageClassName: nfs-storageclass
   accessModes:
