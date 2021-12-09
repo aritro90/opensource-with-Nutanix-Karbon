@@ -1,0 +1,23 @@
+---
+
+logstashPipeline:
+ logstash.conf: |
+    input {
+      beats {
+            port => 5044
+          }
+    }
+    output {  elasticsearch { hosts => ["elasticsearch-master:9200"] } }
+
+
+service: 
+  type: ClusterIP
+  ports:
+    - name: beats
+      port: 5044
+      protocol: TCP
+      targetPort: 5044
+    - name: http
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
