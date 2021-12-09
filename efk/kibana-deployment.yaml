@@ -27,6 +27,6 @@ spec:
             memory: 1Gi
         env:
           - name: ELASTICSEARCH_URL
-            value: http://elasticsearch.kube-logging:9200
+            value: http://elasticsearch:9200
         ports:
         - containerPort: 5601
