@@ -1,0 +1,6 @@
+helm repo add elastic https://helm.elastic.co
+
+helm install elasticsearch elastic/elasticsearch -f ./opensource-with-Nutanix-Karbon/elk/elasticsearch_default_values.yml
+helm install kibana elastic/kibana -f ./opensource-with-Nutanix-Karbon/elk/kibana_values.yml
+helm install logstash  elastic/logstash -f ./opensource-with-Nutanix-Karbon/elk/logstashvalues.yaml
+helm install filebeat  elastic/filebeat -f ./opensource-with-Nutanix-Karbon/elk/filebeatvalues.yaml
